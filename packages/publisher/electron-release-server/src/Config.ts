@@ -24,4 +24,18 @@ export interface PublisherERSConfig {
    * Default: stable
    */
   channel?: string;
+  /**
+   * The release flavor you want to send artifacts to, defaults to
+   * "default".
+   * 
+   * Needs to be specified if you are using ERS >=1.5.0.
+   */
+  flavor?: string;
+  /**
+   * The amount of time until the artifacts will be available, specified in
+   * seconds.
+   * 
+   * If left unspecified the artifacts will be available immediately.
+   */
+  availability_delay?: string;
 }

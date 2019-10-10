@@ -58,7 +58,7 @@ export default class PublisherERS extends PublisherBase<PublisherERSConfig> {
     // eslint-disable-next-line max-len
     const authFetch = (apiPath: string, options?: any) => fetch(api(apiPath), { ...options || {}, headers: { ...(options || {}).headers, Authorization: `Bearer ${token}` } });
 
-    const versions: ERSVersion[] = await (await authFetch('api/version')).json();
+    const versions: ERSVersion[] = await (await authFetch('api/version' + (config.flavor ? `?flavor=${ config.flavor }` : ''))).json();
 
     for (const makeResult of makeResults) {
       const { artifacts, packageJSON } = makeResult;
@@ -84,6 +84,12 @@ export default class PublisherERS extends PublisherBase<PublisherERSConfig> {
             },
             name: packageJSON.version,
             notes: '',
+            ...(config.flavor ? {
+              flavor: config.flavor
+            } : {}),
+            ...(config.availability_delay ? {
+              availability: new Date(Date.now() + (config.availability_delay * 1000))
+            } : {}),
           }),
           headers: {
             'Content-Type': 'application/json',
